@@ -123,6 +123,7 @@ if ($action === 'file') {
     header('Content-Disposition: '.($download?'attachment':'inline').'; filename="'.addcslashes($safeName,'"\\').'"');
     header("Content-Security-Policy: default-src 'none'; sandbox");
     header('X-Content-Type-Options: nosniff');
+    header('X-Frame-Options: SAMEORIGIN');
     readfile($path); exit;
 }
 
