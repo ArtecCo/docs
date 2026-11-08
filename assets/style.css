@@ -21,3 +21,7 @@
   .doc .doc-actions .button{flex:0 0 auto}
 }
 @media(max-width:390px){.doc .doc-actions{max-width:none}}
+
+
+/* Brand mark beside the site title */
+.brand{display:inline-flex;align-items:center;gap:9px}.brand-icon{display:block;width:28px;height:28px;flex:0 0 28px;border-radius:6px}
