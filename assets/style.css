@@ -7,7 +7,7 @@
 
 /* Compact responsive document preview */
 .viewer{display:flex;flex-direction:column;gap:7px;height:92dvh;max-height:92dvh;overflow:hidden}.viewer-head{flex:0 0 auto;padding-bottom:4px}.pdf-toolbar{flex:0 0 auto;margin:0;padding:5px 7px;gap:5px}.pdf-toolbar .button{min-height:27px;padding:3px 8px}#viewerBody{flex:1 1 auto;min-height:0;height:auto;width:100%;display:block;overflow:auto;overscroll-behavior:contain;padding:10px}#pdfCanvas{max-width:100%;height:auto!important}.pdf-loading{padding:12px}.viewer-actions{flex:0 0 auto}
-@media(max-width:600px){.viewer{width:100vw;height:100dvh;max-height:100dvh;max-width:none;margin:0;border:0;border-radius:0;padding:8px;gap:6px}.viewer-head{min-height:38px}.viewer-head .eyebrow{font-size:8px;margin-bottom:1px}.viewer-head strong{display:block;max-width:54vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}.viewer-actions{gap:4px}.viewer-actions .button{min-height:28px;padding:4px 7px;font-size:10px}.pdf-toolbar{justify-content:space-between;gap:3px;padding:4px}.pdf-toolbar .button{min-height:26px;padding:3px 6px;font-size:10px}.pdf-toolbar span{font-size:10px}#viewerBody{padding:4px}#pdfCanvas{max-width:100%;box-shadow:0 1px 3px #1e293b20}}
+@media(max-width:600px){.viewer{width:100vw;height:100dvh;max-height:100dvh;max-width:none;margin:0;border:0;border-radius:0;padding:8px;gap:6px}.viewer-head{min-height:38px}.viewer-head .eyebrow{font-size:8px;margin-bottom:1px}.viewer-head strong{display:block;max-width:54vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}.viewer-actions{gap:4px}.viewer-actions .button{min-height:28px;padding:4px 7px;font-size:10px}.pdf-toolbar{justify-content:center;gap:8px;padding:4px}.pdf-toolbar .button{min-height:26px;padding:3px 8px;font-size:10px}.pdf-toolbar span{font-size:10px}#viewerBody{padding:4px}#pdfCanvas{max-width:100%;box-shadow:0 1px 3px #1e293b20}}
 
 /* A closed dialog must remain out of document flow; .viewer uses flex only while open. */
 .viewer:not([open]){display:none!important}.viewer[open]{display:flex}
@@ -25,3 +25,6 @@
 
 /* Brand mark beside the site title */
 .brand{display:inline-flex;align-items:center;gap:9px}.brand-icon{display:block;width:28px;height:28px;flex:0 0 28px;border-radius:6px}
+
+/* PDF navigation only: previous/next controls and page count, no zoom UI. */
+.pdf-toolbar{justify-content:center;gap:8px}
