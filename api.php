@@ -31,8 +31,8 @@ if ($action === 'list') {
     $query = trim((string)($_GET['q'] ?? ''));
     $tag = trim((string)($_GET['tag'] ?? ''));
     $sql = "SELECT d.id,d.name,d.mime_type,d.size_bytes,d.updated_at,
-            GROUP_CONCAT(DISTINCT t.tag ORDER BY t.tag SEPARATOR ',') AS tags
-            FROM documents d LEFT JOIN document_tags t ON t.document_id=d.id WHERE 1=1";
+            GROUP_CONCAT(DISTINCT dt.tag ORDER BY dt.tag SEPARATOR ',') AS tags
+            FROM documents d LEFT JOIN document_tags dt ON dt.document_id=d.id WHERE 1=1";
     $params = [];
     if ($query !== '') { $sql .= " AND d.name LIKE ?"; $params[] = '%'.$query.'%'; }
     if ($tag !== '') { $sql .= " AND EXISTS (SELECT 1 FROM document_tags x WHERE x.document_id=d.id AND x.tag=?)"; $params[] = $tag; }
@@ -41,7 +41,7 @@ if ($action === 'list') {
     $documents=$stmt->fetchAll();
     foreach ($documents as &$document) $document['tags']=$document['tags'] ? explode(',', $document['tags']) : [];
     unset($document);
-    $tags=$pdo->query('SELECT DISTINCT tag FROM document_tags ORDER BY tag')->fetchAll(PDO::FETCH_COLUMN);
+    $tags=$pdo->query('SELECT name FROM tags ORDER BY name')->fetchAll(PDO::FETCH_COLUMN);
     app_json(['documents'=>$documents,'tags'=>$tags]);
 }
 
@@ -55,7 +55,11 @@ if ($action === 'upload') {
     $name=trim(strip_tags((string)($_POST['name'] ?? pathinfo($file['name'],PATHINFO_FILENAME))));
     $name=function_exists('mb_substr') ? mb_substr($name,0,180,'UTF-8') : substr($name,0,180);
     if ($name==='') app_json(['error'=>'A document name is required.'],400);
-    $tags=app_tags((string)($_POST['tags'] ?? ''));
+    $tag=trim((string)($_POST['tag'] ?? ''));
+    $tagCheck=$pdo->prepare('SELECT name FROM tags WHERE name=?'); $tagCheck->execute([$tag]);
+    $validTag=$tagCheck->fetchColumn();
+    if (!$validTag) app_json(['error'=>'Choose a valid tag from the list.'],400);
+    $tags=[(string)$validTag];
     $storage=rtrim($config['storage_path'], DIRECTORY_SEPARATOR);
     if (!is_dir($storage) && !mkdir($storage,0700,true) && !is_dir($storage)) app_json(['error'=>'Cannot create storage directory.'],500);
     $key=bin2hex(random_bytes(24)).'.'.$config['allowed_mimes'][$mime];
@@ -88,7 +92,13 @@ if ($action === 'update') {
     try {
         $pdo->beginTransaction();
         $pdo->prepare('UPDATE documents SET name=?,updated_at=NOW() WHERE id=?')->execute([$name,$id]);
-        app_save_tags($pdo,$id,app_tags((string)($body['tags']??'')));
+        $tag=trim((string)($body['tag']??''));
+        if ($tag !== '') {
+            $tagCheck=$pdo->prepare('SELECT name FROM tags WHERE name=?'); $tagCheck->execute([$tag]);
+            $validTag=$tagCheck->fetchColumn();
+            if (!$validTag) throw new RuntimeException('Invalid tag selected');
+            app_save_tags($pdo,$id,[(string)$validTag]);
+        } else { app_save_tags($pdo,$id,[]); }
         $pdo->commit();
     } catch(Throwable $e) {
         if ($pdo->inTransaction()) $pdo->rollBack();
