@@ -32,10 +32,10 @@ The document files are stored in `storage/`. That directory is inside the subdom
 2. In cPanel → Directory Privacy, enable password protection for the **entire subdomain folder**. This protects the frontend and all PHP endpoints with the same cPanel credentials. Keep it enabled.
 3. Ensure the subdomain uses HTTPS.
 4. In cPanel → MySQL Databases, create a database and database user, then grant that user all privileges on the database.
-5. Import `database.sql` using phpMyAdmin.
+5. Import `database.sql` using phpMyAdmin. This creates the `tags` table as well as the document tables. Add tag names manually in phpMyAdmin, for example: `INSERT INTO tags (name) VALUES ('Invoices'), ('Contracts'), ('Personal');`. Upload and edit dialogs load tag choices from this table.
 6. Open `config.php` and replace the database name, username and password placeholders with your cPanel database credentials. Do not share this file or commit real credentials.
 7. Ensure PHP can write to `storage/`. Start with permissions 0700; if your host requires different permissions, use the narrowest permissions that work.
-8. Open the subdomain. Upload a test PDF and image. Test preview, download, rename, tag filtering and deletion.
+8. Open the subdomain. Add at least one row to `tags` in phpMyAdmin, then upload a test PDF and image. Test preview, download, rename, tag filtering and deletion.
 9. Test direct storage isolation: after uploading a file, copy its generated storage filename from the cPanel File Manager and try opening `https://your-subdomain.example/storage/GENERATED_FILENAME`. It must return HTTP 403 (or 404). Also try opening `https://your-subdomain.example/storage/`; it must not list files.
 10. Test opening `https://your-subdomain.example/config.php`, `database.sql`, and `includes/functions.php`. These must not reveal source contents.
 
