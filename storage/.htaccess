@@ -1,0 +1,9 @@
+# Deny every direct HTTP request to private document storage.
+Require all denied
+Options -Indexes -ExecCGI
+<IfModule mod_php.c>
+  php_flag engine off
+</IfModule>
+<FilesMatch "\\.(php[0-9]?|phtml|phar|cgi|pl|py|sh)$">
+  Require all denied
+</FilesMatch>
