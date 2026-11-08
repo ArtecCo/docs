@@ -1,7 +1,6 @@
 Options -Indexes
-RewriteEngine On
-# Keep private application files out of the web root; deny hidden files.
-<FilesMatch "^\\.">
+# Deny access to hidden files and directories.
+<FilesMatch "^\.">
   Require all denied
 </FilesMatch>
 <IfModule mod_headers.c>
@@ -10,4 +9,4 @@ RewriteEngine On
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
 </IfModule>
-# Directory Privacy should be enabled for this entire directory in cPanel.
+# Enable cPanel Directory Privacy for this entire subdomain document root.
