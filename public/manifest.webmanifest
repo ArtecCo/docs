@@ -1,1 +1,1 @@
-{"name":"Araha Docs","short_name":"Docs","start_url":"./","display":"standalone","background_color":"#101010","theme_color":"#101010","description":"Private document repository","icons":[]}
+{"name":"Araha Docs","short_name":"Docs","start_url":"./","scope":"./","display":"standalone","background_color":"#101010","theme_color":"#101010","description":"Private document repository","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]}
