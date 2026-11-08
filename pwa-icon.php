@@ -13,12 +13,9 @@ header('X-Content-Type-Options: nosniff');
 
 echo <<<'SVG'
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="112" fill="#172b45"/>
-  <path d="M164 104h126l78 78v218a30 30 0 0 1-30 30H164a30 30 0 0 1-30-30V134a30 30 0 0 1 30-30Z"
-        fill="none" stroke="#fff" stroke-width="22" stroke-linejoin="round"/>
-  <path d="M290 108v62a18 18 0 0 0 18 18h60"
-        fill="none" stroke="#fff" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M190 248h132M190 300h132M190 352h82"
-        fill="none" stroke="#8fb7e8" stroke-width="20" stroke-linecap="round"/>
+  <rect width="512" height="512" rx="112" fill="#101b2d"/>
+  <path fill="#f8fafc" fill-rule="evenodd" d="
+    M144 112h128c100 0 164 56 164 144s-64 144-164 144H144V112Zm88 76v136h38c52 0 82-25 82-68s-30-68-82-68h-38Z"/>
+  <circle cx="294" cy="256" r="13" fill="#65d6c4"/>
 </svg>
 SVG;
