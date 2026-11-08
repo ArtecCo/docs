@@ -1,41 +1,57 @@
-# Araha Docs — installation
+# Araha Docs — SpidyHost installation
 
-## Hosting layout
+## Folder layout
 
-Set the subdomain document root to the repository's `public/` directory. Do **not** point the subdomain at the repository root.
-
-Expected layout:
+Upload the repository contents directly into the subdomain's existing document-root folder:
 
 ```
-/home/ACCOUNT/docs/
-  config.php                 # private; outside public web root
-  private-documents/         # private file storage
-  database.sql
-  public/                    # subdomain document root
-    index.php
-    api.php
-    assets/
+your-subdomain/
+├── index.php
+├── api.php
+├── config.php
+├── .htaccess
+├── includes/
+│   ├── functions.php
+│   └── .htaccess
+├── assets/
+│   ├── style.css
+│   ├── app.js
+│   └── icon.svg
+├── storage/
+│   └── .htaccess
+├── database.sql
+├── manifest.webmanifest
+└── sw.js
 ```
 
-1. Upload the repository contents to a directory outside `public_html` if your hosting account permits it.
-2. Set the subdomain document root to the `public` directory.
-3. In cPanel Directory Privacy, protect the entire subdomain document root. Use HTTPS.
-4. Create a MySQL database and user in cPanel; grant the user all privileges on that database.
-5. Import `database.sqlphpMyAdmin.
-6. Copy `config.example.php` to `config.php` in the parent directory. Update database credentials. Set a private writable storage path outside the web root.
-7. Ensure the storage directory is writable by PHP (start with 0700; adjust only as required by your host).
-8. Confirm that a direct URL to a guessed storage file is impossible because storage is outside the document root.
-9. Test upload, preview, download, rename, tag filtering and delete.
+The document files are stored in `storage/`. That directory is inside the subdomain folder, but its own Apache access rules deny direct web requests. All previews and downloads go through `api.php`.
 
-## Security notes
+## Setup
 
-- Directory Privacy provides the outer HTTP Basic Authentication gate. PHP checks `REMOTE_USER` on each request; verify this is populated by your host. If your Apache/PHP setup does not expose it, do not simply disable the check—ask SpidyHost how authenticated requests are exposed to PHP or use application-level login.
-- Keep `config.php` and `private-documents/` outside the subdomain document root. If your hosting plan forces all files inside `public_html`, create them in a sibling directory and verify no URL maps to them.
-- The application only accepts PDF, JPEG, PNG, GIF and WebP based on server-detected MIME type. Upload size is limited to 15 MB by application config; PHP's `upload_max_filesize` and `post_max_size` must be at least that large.
-- Keep PHP updated. Use HTTPS. Back up the database and private storage together.
-- Service worker caches only the app shell, never API responses or documents. Private documents are streamed with `Cache-Control: no-store`.
-- cPanel Basic Auth is not a complete account/session management system. Protect all paths, including `api.php`, and verify the host's auth behavior before storing sensitive documents.
+1. Upload the repository files into the subdomain folder.
+2. In cPanel → Directory Privacy, enable password protection for the **entire subdomain folder**. This protects the frontend and all PHP endpoints with the same cPanel credentials. Keep it enabled.
+3. Ensure the subdomain uses HTTPS.
+4. In cPanel → MySQL Databases, create a database and database user, then grant that user all privileges on the database.
+5. Import `database.sql` using phpMyAdmin.
+6. Open `config.php` and replace the database name, username and password placeholders with your cPanel database credentials. Do not share this file or commit real credentials.
+7. Ensure PHP can write to `storage/`. Start with permissions 0700; if your host requires different permissions, use the narrowest permissions that work.
+8. Open the subdomain. Upload a test PDF and image. Test preview, download, rename, tag filtering and deletion.
+9. Test direct storage isolation: after uploading a file, copy its generated storage filename from the cPanel File Manager and try opening `https://your-subdomain.example/storage/GENERATED_FILENAME`. It must return HTTP 403 (or 404). Also try opening `https://your-subdomain.example/storage/`; it must not list files.
+10. Test opening `https://your-subdomain.example/config.php`, `database.sql`, and `includes/functions.php`. These must not reveal source contents.
 
-## Current limitations
+## Security model and important checks
 
-This first version is intentionally single-library and intended for one trusted cPanel-authenticated user/group. It does not provide per-user permissions, audit history, versioning, OCR, or sharing links. The PWA requires HTTPS. Browser PDF support varies by device.
+- cPanel Directory Privacy is the authentication boundary. Apache authenticates requests before PHP executes. The app intentionally does not depend on `REMOTE_USER`, which is not consistently exposed by shared-hosting PHP handlers.
+- `storage/.htaccess` denies direct HTTP access. The application never exposes storage paths in document listings; it streams documents by database ID through PHP.
+- The root `.htaccess` denies direct access to configuration and database/install files. `includes/.htaccess` denies access to helper code.
+- Uploads are validated using server-detected MIME types. Random storage names are generated; user-provided filenames are never used as disk paths.
+- Mutations require POST and a session-bound CSRF token. Database queries use PDO prepared statements.
+- The service worker caches only static CSS, JavaScript, icon and manifest assets. It does not cache PHP pages, API responses, previews or downloads.
+- **Do not upload confidential documents until the direct-storage URL tests above return 403/404.** This security boundary depends on Apache/LiteSpeed honoring the `.htaccess` rules. If direct requests succeed, contact SpidyHost and do not use this storage arrangement until fixed.
+- PHP should have PDO MySQL and Fileinfo enabled. mbstring is recommended. Set PHP `upload_max_filesize` and `post_max_size` to at least 16M.
+- The app's default maximum file size is 15 MB; change `max_upload_bytes` in `config.php` if needed, while keeping PHP limits aligned.
+- Back up the MySQL database and `storage/` directory together.
+
+## Scope
+
+This is a simple shared document library for people who know the cPanel directory password. It does not include separate user accounts, per-user roles, public share links, version history, OCR or audit logging. The PWA requires HTTPS. PDF preview depends on the browser's built-in PDF support.
