@@ -7,7 +7,7 @@ if (!is_file($configFile)) { http_response_code(500); exit('Configuration missin
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#ffffff"><meta name="description" content="Private document vault">
-<link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="assets/style.css?v=6">
+<link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="assets/style.css?v=7">
 <title>Araha DocuVault</title></head><body>
 <header class="site-header"><div class="header-inner"><a class="brand" href="./">Araha DocuVault</a><button id="installBtn" class="button button-light" hidden>Install app</button></div></header>
 <main>
@@ -20,4 +20,4 @@ if (!is_file($configFile)) { http_response_code(500); exit('Configuration missin
 <dialog id="uploadDialog"><form id="uploadForm"><div class="dialog-heading"><div><div class="eyebrow">ADD TO YOUR VAULT</div><h2>Upload document</h2></div><button type="button" class="icon-button" id="closeUpload" aria-label="Close">×</button></div><label>Document name<input id="uploadName" name="name" maxlength="180" placeholder="Enter document name" required></label><label>Tag<select id="uploadTag" name="tag" required><option value="">Loading tags…</option></select></label><label class="file-picker">Choose PDF or image<input id="uploadFile" name="file" type="file" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,application/pdf,image/jpeg,image/png,image/gif,image/webp" required><span id="selectedFile">No file selected</span></label><div class="actions"><button type="button" class="button button-light" id="cancelUpload">Cancel</button><button class="button" type="submit" id="submitUpload">Upload document</button></div></form></dialog>
 <dialog id="editor"><form id="editForm"><div class="dialog-heading"><div><div class="eyebrow">DOCUMENT DETAILS</div><h2>Edit document</h2></div><button type="button" class="icon-button" id="cancelEdit" aria-label="Close">×</button></div><label>Document name<input id="editName" maxlength="180" required></label><label>Tag<select id="editTag"><option value="">No tag</option></select></label><input type="hidden" id="editId"><div class="actions"><button type="button" class="button button-light" id="cancelEditBottom">Cancel</button><button class="button" type="submit">Save changes</button></div></form></dialog>
 <dialog id="viewer" class="viewer"><div class="viewer-head"><div><div class="eyebrow">DOCUMENT PREVIEW</div><strong id="viewerTitle">Preview</strong></div><div class="viewer-actions"><a id="downloadLink" class="button button-light" target="_blank" rel="noopener">Download</a><button id="closeViewer" class="button button-light">Close</button></div></div><div id="viewerBody"></div></dialog>
-<script src="assets/app.js?v=6" defer></script></body></html>
+<script src="assets/app.js?v=7" defer></script></body></html>
