@@ -1,9 +1,9 @@
 Options -Indexes
-# Keep application secrets and configuration inaccessible over HTTP.
-<FilesMatch "^(config\\.php|database\\.sql|INSTALL\\.md|README\\.md)$">
+# Keep application secrets and database/install files inaccessible over HTTP.
+<FilesMatch "^(config(\.example)?\.php|database\.sql|INSTALL\.md|README\.md)$">
   Require all denied
 </FilesMatch>
-<FilesMatch "^\\.">
+<FilesMatch "^\.">
   Require all denied
 </FilesMatch>
 <IfModule mod_headers.c>
