@@ -1,0 +1,4 @@
+User-agent: *
+# The site sends an X-Robots-Tag noindex header on every response.
+# Keep crawling allowed so search engines can discover and honor that directive.
+Allow: /
