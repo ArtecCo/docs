@@ -1,1 +1,1 @@
-{"name":"Araha DocuVault","short_name":"DocuVault","start_url":"./","scope":"./","display":"standalone","background_color":"#ffffff","theme_color":"#ffffff","description":"Private document vault"}
+{"name":"Araha DocuVault","short_name":"DocuVault","start_url":"./","scope":"./","display":"standalone","background_color":"#ffffff","theme_color":"#ffffff","description":"Private document vault","icons":[{"src":"assets/docuvault-icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]}
