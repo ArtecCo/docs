@@ -7,7 +7,7 @@ if (!is_file($configFile)) { http_response_code(500); exit('Configuration missin
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#ffffff"><meta name="description" content="Private document vault">
-<link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="assets/style.css?v=7">
+<link rel="manifest" href="manifest.webmanifest?v=7"><link rel="stylesheet" href="assets/style.css?v=7">
 <title>Araha DocuVault</title></head><body>
 <header class="site-header"><div class="header-inner"><a class="brand" href="./">Araha DocuVault</a><button id="installBtn" class="button button-light" hidden>Install app</button></div></header>
 <main>
