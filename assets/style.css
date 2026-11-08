@@ -11,3 +11,13 @@
 
 /* A closed dialog must remain out of document flow; .viewer uses flex only while open. */
 .viewer:not([open]){display:none!important}.viewer[open]{display:flex}
+
+/* On phones, keep document actions on their own row below name, metadata and tags. */
+@media(max-width:650px){
+  .doc{display:grid;grid-template-columns:30px minmax(0,1fr);align-items:start;column-gap:9px;row-gap:7px}
+  .doc .file-type{grid-column:1;grid-row:1}
+  .doc .doc-main{grid-column:2;grid-row:1;min-width:0}
+  .doc .doc-actions{grid-column:2;grid-row:2;max-width:none;width:100%;justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;padding-bottom:1px}
+  .doc .doc-actions .button{flex:0 0 auto}
+}
+@media(max-width:390px){.doc .doc-actions{max-width:none}}
